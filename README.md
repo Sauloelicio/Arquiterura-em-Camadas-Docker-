@@ -5,6 +5,13 @@ aprendizado de **Orientação a Objetos**, **arquitetura em camadas** e
 **persistência de dados sem frameworks**. Este projeto está sendo desenvolvido de forma incremental, conforme 
 aprendizado de novos conceitos e tecnologias.
 
+## Autoria e créditos
+
+Esta versão é desenvolvida e mantida principalmente por **Sauloelicio**, com
+autorização para publicação e modificação. O projeto deriva do
+`ecommerce-java-backend`, originalmente criado por **Joao-Severgnini**; a
+atribuição do histórico original é preservada.
+
 ---
 
 ## 🎯 Objetivo do Projeto

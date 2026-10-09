@@ -6,28 +6,32 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
-    private static final String URL = "jdbc:h2:mem:ecommerce-db";
-    // Keep the in-memory database alive across multiple connections in the same JVM
-    // so that the schema created by DatabaseInitializer remains accessible.
-    // DB_CLOSE_DELAY=-1 prevents H2 from dropping the DB when the connection closes.
-    // See: https://www.h2database.com/html/features.html#in_memory_databases
-    private static final String URL_WITH_DELAY = "jdbc:h2:mem:ecommerce-db;DB_CLOSE_DELAY=-1";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "";
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException ignored) {
+        }
+    }
 
-    private DatabaseConnection(){
-        // Private constructor to prevent instantiation
+    // Configuracoes padrao para MySQL local
+    private static final String DEFAULT_URL = "jdbc:mysql://localhost:3306/ecommerce_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&allowMultiQueries=true";
+    private static final String DEFAULT_USER = "root";
+    private static final String DEFAULT_PASSWORD = "root";
+
+    private DatabaseConnection() {
+        // Construtor privado para evitar instanciacao
     }
 
     public static Connection getConnection() {
+        // Le variaveis de ambiente se disponiveis (util para Docker / producao)
+        String url = System.getenv().getOrDefault("DB_URL", DEFAULT_URL);
+        String user = System.getenv().getOrDefault("DB_USER", DEFAULT_USER);
+        String password = System.getenv().getOrDefault("DB_PASSWORD", DEFAULT_PASSWORD);
+
         try {
-            return DriverManager.getConnection(URL_WITH_DELAY, USER, PASSWORD);
+            return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            throw new RuntimeException("Error connecting to the database", e);
+            throw new RuntimeException("Error connecting to database at " + url + ". Verifique se o MySQL esta rodando.", e);
         }
     }
 }
-
-
-
-

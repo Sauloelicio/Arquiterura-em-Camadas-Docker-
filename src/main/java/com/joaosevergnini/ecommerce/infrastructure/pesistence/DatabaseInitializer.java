@@ -20,7 +20,12 @@ public class DatabaseInitializer {
             }
 
             String sql = new String(is.readAllBytes());
-            stmt.execute(sql);
+            for (String statement : sql.split(";")) {
+                String trimmed = statement.trim();
+                if (!trimmed.isEmpty()) {
+                    stmt.execute(trimmed);
+                }
+            }
 
         } catch (Exception e) {
             throw new RuntimeException("Error initializing database", e);

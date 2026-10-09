@@ -33,7 +33,7 @@ public class Main {
         var orderService = new OrderService(
                 orderRepository,
                 orderItemRepository,
-                productRepository,
+                productRepository, 
                 customerRepository
         );
 
@@ -41,10 +41,15 @@ public class Main {
 
         DatabaseInitializer.init();
 
-        // 1- Create a new customer
-        var customer = new Customer("John Doe", "johnDoe@gmail.com");
-        customer = customerService.createCustomer(customer);
-        System.out.println("Created Customer: " + customer.getName());
+        // 1- Get or create customer (reutiliza se ja existir no banco)
+        Customer customer;
+        try {
+            customer = customerService.findByEmail("johnDoe@gmail.com");
+            System.out.println("Customer found: " + customer.getName() + " (id: " + customer.getId() + ")");
+        } catch (Exception e) {
+            customer = customerService.createCustomer(new Customer("John Doe", "johnDoe@gmail.com"));
+            System.out.println("Created Customer: " + customer.getName());
+        }
 
         // 2- Create products
         var mouse = new Product("Mouse", BigDecimal.valueOf(100), 50);

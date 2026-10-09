@@ -18,7 +18,7 @@ public class Customer {
         this.name = name;
         this.email = email;
     }
-
+    
     // Constructor with id for existing customers in DB
     public Customer(long id, String name, String email) {
         Objects.requireNonNull(name, "name");
